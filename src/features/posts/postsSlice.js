@@ -25,6 +25,28 @@ export const addNewPost = createAsyncThunk('posts/addNewPost', async (initialSta
         return response.data;
     } catch (error) {
         return error.message;
+        //if new post is created and you want to update it then return initialstate in catch as we can interact with json api but not update it so it gives error message
+    }
+})
+
+export const updatePost = createAsyncThunk ('posts/updatePost', async(initialState) => {
+   try {
+    const { id } = initialState
+    const response = await axios.put(`${POSTS_URL}/${id}`, initialState)
+    return response.data
+   } catch(error) {
+    return error.message;
+   }
+})
+
+export const deletePost = createAsyncThunk('posts/deletePost', async (initialState) => {
+    try {
+        const { id } = initialState
+        const response = await axios.delete(`${POSTS_URL}/${id}`)
+        if(response?.status === 200) return initialState
+        return `${response?.status} : ${response?.statusText}`
+    } catch (error) {
+        return error.message;
     }
 })
 
@@ -106,7 +128,31 @@ const postsSlice = createSlice({
                 }
                 console.log(action.payload)
                 state.posts.push(action.payload)
-            }) 
+            })
+            .addCase(updatePost.fulfilled, (state, action) => {
+                if(!action.payload.id){
+                    console.log('Update could not complete')
+                    console.log(action.payload)
+                    return
+                }
+
+                action.payload.date = new Date().toISOString()
+
+                const { id } = action.payload;
+                const posts = state.posts.filter((post) => post.id !== id)
+                state.posts = [...posts, action.payload] 
+            })
+            .addCase(deletePost.fulfilled, (state, action) => {
+                if(!action.payload?.id) {
+                    console.log('delete could not complete')
+                    console.log(action.payload)
+                    return
+                }
+                const { id } = action.payload
+
+                const posts = state.posts.filter((post) => post.id !== id)
+                state.posts = posts
+            })
     }
 });
 
@@ -114,6 +160,8 @@ const postsSlice = createSlice({
 export const selectAllPosts = (state) => state.posts.posts;
 export const getPostsStatus = (state) => state.posts.status;
 export const getPostsError = (state) => state.posts.error;
+
+export const selectPostById = (state, postId) => state.posts.posts.find((post) => post.id === postId);
 
 export const { postAdded, reactionAdded } = postsSlice.actions;
 

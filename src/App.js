@@ -1,17 +1,29 @@
 import './App.css';
+import {Routes, Route} from 'react-router-dom'
+import Layout from './components/Layout';
+
 import Counter from './features/counter/Counter';
 import AddPostForm from './features/posts/AddPostForm';
 import PostsList from './features/posts/PostsList';
-
+import SinglePostPage from './features/posts/SinglePostPage';
+import EditPostForm from './features/posts/EditPostForm';
 
 function App() {
+  console.log('ddd')
   return (
-    <main className="App">
-      {/* <Counter /> */}
-      <AddPostForm />
-      <PostsList />
+    <Routes>
+      <Route path='/' element={<Layout />}>
+        
+        <Route index element={<PostsList/>} />
 
-    </main>
+        <Route path='post'>
+          <Route index element={<AddPostForm />} />
+          <Route path=':postId' element={<SinglePostPage/>} />
+          <Route path='edit/:postId' element ={<EditPostForm /> } />
+        </Route>
+
+      </Route>
+    </Routes>
   );
 }
 
