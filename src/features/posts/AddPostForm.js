@@ -51,7 +51,7 @@ const AddPostForm = () => {
     <section>
         <h2>Add a New Post</h2>
         <form >
-            <lable htmlFor="postTitle">Post Title:</lable>
+            <label htmlFor="postTitle">Post Title:</label>
             <input 
                 type='text'
                 id='postTitle'
@@ -64,7 +64,7 @@ const AddPostForm = () => {
                 <option value=''></option>
                 {userOptions}
             </select>
-            <lable htmlFor="postContent">Content:</lable>
+            <label htmlFor="postContent">Content:</label>
             <textarea
                 id='postContent'
                 name='postContent'

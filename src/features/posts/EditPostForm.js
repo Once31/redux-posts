@@ -80,7 +80,7 @@ function EditPostForm() {
     <section>
         <h2>Edit Post</h2>
         <form >
-            <lable htmlFor="postTitle">Post Title:</lable>
+            <label htmlFor="postTitle">Post Title:</label>
             <input 
                 type='text'
                 id='postTitle'
@@ -93,7 +93,7 @@ function EditPostForm() {
                 <option value=''></option>
                 {userOptions}
             </select>
-            <lable htmlFor="postContent">Content:</lable>
+            <label htmlFor="postContent">Content:</label>
             <textarea
                 id='postContent'
                 name='postContent'
